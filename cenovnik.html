@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenovnik | eRide Virpazar | Electric Bicycle Rentals</title>
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --secondary-green: #1bd692;
+            --dark-green: #0e8f60;
+            --light-green: #23ffa9;
+            --light-gray: #f4f4f4;
+            --medium-gray: #a0a0a0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-black);
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(27, 214, 146, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-green);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .footer-social a{
+        text-decoration: none;
+    }
+        nav ul li a:hover {
+            color: var(--secondary-green);
+        }
+        
+        nav ul li a.active {
+            color: var(--secondary-green);
+            font-weight: 600;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+        }
+        
+        .page-header {
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to right, rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.6)), url('/api/placeholder/1400/500') center/cover no-repeat;
+            position: relative;
+            margin-top: 80px;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--light-gray);
+        }
+        
+        .highlight {
+            color: var(--secondary-green);
+        }
+
+        /* Pricing Section Styles */
+        .pricing-section {
+            padding: 100px 0;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .pricing-header h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .pricing-header p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .pricing-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .pricing-tab {
+            padding: 12px 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(27, 214, 146, 0.1);
+            color: var(--medium-gray);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-tab:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .pricing-tab:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .pricing-tab.active {
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+            border-color: var(--secondary-green);
+        }
+
+        .pricing-content {
+            display: none;
+        }
+
+        .pricing-content.active {
+            display: block;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--secondary-green);
+        }
+
+        .pricing-card-header {
+            background-color: rgba(27, 214, 146, 0.05);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .pricing-card-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pricing-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .pricing-card:hover .pricing-card-image img {
+            transform: scale(1.05);
+        }
+
+        .pricing-card-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-card-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .pricing-card-content {
+            padding: 25px;
+        }
+
+        .pricing-card-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--secondary-green);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pricing-card-time {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .pricing-card-features {
+            margin-bottom: 25px;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .pricing-feature-icon {
+            color: var(--secondary-green);
+            margin-right: 15px;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .pricing-feature-text {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .pricing-card-footer {
+            padding: 0 25px 25px;
+            text-align: center;
+        }
+
+        .pricing-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--secondary-green);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--secondary-green);
+            width: 100%;
+        }
+        
+        .pricing-btn:hover {
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+        }
+
+        /* Table Pricing */
+        .pricing-table-container {
+            overflow-x: auto;
+            margin-bottom: 50px;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pricing-table th {
+            background-color: rgba(27, 214, 146, 0.1);
+            color: var(--secondary-green);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .pricing-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .pricing-table td {
+            color: var(--medium-gray);
+            font-size: 15px;
+        }
+
+        .pricing-table .price-cell {
+            font-weight: 600;
+            color: var(--secondary-green);
+        }
+
+        /* Discounts Section */
+        .discounts-section {
+            padding: 80px 0;
+            background-color: rgba(27, 214, 146, 0.03);
+        }
+
+        .discounts-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .discounts-header h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .discounts-header p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .discounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .discount-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .discount-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(27, 214, 146, 0.05);
+            border-color: var(--secondary-green);
+        }
+
+        .discount-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(27, 214, 146, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: var(--secondary-green);
+            font-size: 30px;
+        }
+
+        .discount-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .discount-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--secondary-green);
+            margin-bottom: 15px;
+        }
+
+        .discount-text {
+            font-size: 15px;
+            color: var(--medium-gray);
+        }
+
+        /* Extras Section */
+        .extras-section {
+            padding: 100px 0;
+        }
+
+        .extras-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .extras-header h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .extras-header p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .extra-card {
+            display: flex;
+            align-items: flex-start;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .extra-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(27, 214, 146, 0.05);
+            border-color: var(--secondary-green);
+        }
+
+        .extra-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(27, 214, 146, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: var(--secondary-green);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .extra-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .extra-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--secondary-green);
+            margin-bottom: 10px;
+        }
+
+        .extra-text {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 60px 0 100px;
+            background-color: rgba(27, 214, 146, 0.03);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .faq-header h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .faq-header p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(27, 214, 146, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: rgba(27, 214, 146, 0.05);
+        }
+
+        .accordion-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .accordion-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--secondary-green);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-icon::before {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .accordion-icon::after {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .accordion-item.active .accordion-icon::after {
+            opacity: 0;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+
+        .accordion-body {
+            padding: 0 20px 20px;
+            color: var(--medium-gray);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7)), url('/api/placeholder/1400/400') center/cover no-repeat;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--secondary-green);
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: var(--secondary-green);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--secondary-green);
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+        }
+
+        footer {
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(27, 214, 146, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-col h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: var(--medium-gray);
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-green);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--medium-gray);
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 40px;
+            }
+            
+            .discounts-grid,
+            .extras-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 15px 0;
+            }
+            
+            .logo img {
+                height: 30px;
+            }
+            
+            .logo h1 {
+                font-size: 20px;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: var(--primary-black);
+                transition: left 0.3s ease;
+                padding: 20px;
+                border-right: 1px solid rgba(27, 214, 146, 0.1);
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0 0 20px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .pricing-header h2,
+            .discounts-header h2,
+            .extras-header h2,
+            .faq-header h2,
+            .cta-content h2 {
+                font-size: 28px;
+            }
+            
+            .discounts-grid,
+            .extras-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="logo.png" alt="eRide Logo">
+                    <h1>e-Ride Virpazar</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Početna</a></li>
+                        <li><a href="onama.html">O nama</a></li>
+                        <li><a href="rute.html">Rute</a></li>
+                        <li><a href="cenovnik.html" class="active">Cenovnik</a></li>
+                        <li><a href="rezervisi.html">Rezerviši</a></li>
+                        <li><a href="kontakt.html">Kontakt</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <h1>Naš <span class="highlight">cenovnik</span></h1>
+                <p>Transparentne cene bez skrivenih troškova za iznajmljivanje električnih bicikala</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-header">
+                <h2>Iznajmljivanje <span class="highlight">bicikala</span></h2>
+                <p>Odaberite tip bicikla i trajanje koje vam najviše odgovara</p>
+            </div>
+            
+            <div class="pricing-tabs">
+                <div class="pricing-tab active" data-tab="hourly">Po satu</div>
+                <div class="pricing-tab" data-tab="daily">Po danu</div>
+                <div class="pricing-tab" data-tab="weekly">Nedeljno</div>
+            </div>
+            
+            <div class="pricing-content active" id="hourly">
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-card-image">
+                            <img src="/api/placeholder/400/200" alt="Family e-Bike Plus">
+                        </div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-card-title">Family e-Bike Plus</h3>
+                            <p class="pricing-card-subtitle">Za porodične avanture i grupne ture</p>
+                        </div>
+                        <div class="pricing-card-content">
+                            <div class="pricing-card-price">
+                                €12 <span class="pricing-card-time">/ 2 sata</span>
+                            </div>
+                            <div class="pricing-card-features">
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Baterija sa dometom do 70km
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Maksimalna brzina 22km/h
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-child"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Opciono dečje sedište
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Težina: 25kg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <a href="rezervisi.html" class="pricing-btn">Rezerviši</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pricing-table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th>Tip bicikla</th>
+                                <th>2 sata</th>
+                                <th>4 sata</th>
+                                <th>Dodatni sat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mountain e-Bike Pro</td>
+                                <td class="price-cell">€10</td>
+                                <td class="price-cell">€18</td>
+                                <td class="price-cell">€5</td>
+                            </tr>
+                            <tr>
+                                <td>City e-Bike Cruiser</td>
+                                <td class="price-cell">€8</td>
+                                <td class="price-cell">€15</td>
+                                <td class="price-cell">€4</td>
+                            </tr>
+                            <tr>
+                                <td>Family e-Bike Plus</td>
+                                <td class="price-cell">€12</td>
+                                <td class="price-cell">€22</td>
+                                <td class="price-cell">€6</td>
+                            </tr>
+                            <tr>
+                                <td>Comfort e-Bike Tour</td>
+                                <td class="price-cell">€9</td>
+                                <td class="price-cell">€16</td>
+                                <td class="price-cell">€4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="pricing-content" id="daily">
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-card-image">
+                            <img src="/api/placeholder/400/200" alt="Mountain e-Bike Pro">
+                        </div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-card-title">Mountain e-Bike Pro</h3>
+                            <p class="pricing-card-subtitle">Za avanturiste i ljubitelje prirode</p>
+                        </div>
+                        <div class="pricing-card-content">
+                            <div class="pricing-card-price">
+                                €35 <span class="pricing-card-time">/ dan</span>
+                            </div>
+                            <div class="pricing-card-features">
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Baterija sa dometom do 80km
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Maksimalna brzina 25km/h
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-mountain"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Idealan za brdovite terene
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Težina: 22kg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <a href="rezervisi.html" class="pricing-btn">Rezerviši</a>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-card-image">
+                            <img src="/api/placeholder/400/200" alt="City e-Bike Cruiser">
+                        </div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-card-title">City e-Bike Cruiser</h3>
+                            <p class="pricing-card-subtitle">Za udobno putovanje i gradsku vožnju</p>
+                        </div>
+                        <div class="pricing-card-content">
+                            <div class="pricing-card-price">
+                                €25 <span class="pricing-card-time">/ dan</span>
+                            </div>
+                            <div class="pricing-card-features">
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Baterija sa dometom do 60km
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Maksimalna brzina 20km/h
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-road"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Udoban za duže vožnje
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Težina: 20kg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <a href="rezervisi.html" class="pricing-btn">Rezerviši</a>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-card-image">
+                            <img src="/api/placeholder/400/200" alt="Family e-Bike Plus">
+                        </div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-card-title">Family e-Bike Plus</h3>
+                            <p class="pricing-card-subtitle">Za porodične avanture i grupne ture</p>
+                        </div>
+                        <div class="pricing-card-content">
+                            <div class="pricing-card-price">
+                                €40 <span class="pricing-card-time">/ dan</span>
+                            </div>
+                            <div class="pricing-card-features">
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Baterija sa dometom do 70km
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Maksimalna brzina 22km/h
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-child"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Opciono dečje sedište
+                                    </div>
+                                </div>
+                                <div class="pricing-feature">
+                                    <div class="pricing-feature-icon">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div class="pricing-feature-text">
+                                        Težina: 25kg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <a href="rezervisi.html" class="pricing-btn">Rezerviši</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pricing-table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th>Tip bicikla</th>
+                                <th>1 dan</th>
+                                <th>2 dana</th>
+                                <th>3 dana</th>
+                                <th>4-6 dana</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mountain e-Bike Pro</td>
+                                <td class="price-cell">€35</td>
+                                <td class="price-cell">€65</td>
+                                <td class="price-cell">€90</td>
+                                <td class="price-cell">€30/dan</td>
+                            </tr>
+                            <tr>
+                                <td>City e-Bike Cruiser</td>
+                                <td class="price-cell">€25</td>
+                                <td class="price-cell">€45</td>
+                                <td class="price-cell">€65</td>
+                                <td class="price-cell">€20/dan</td>
+                            </tr>
+                            <tr>
+                                <td>Family e-Bike Plus</td>
+                                <td class="price-cell">€40</td>
+                                <td class="price-cell">€75</td>
+                                <td class="price-cell">€105</td>
+                                <td class="price-cell">€35/dan</td>
+                            </tr>
+                            <tr>
+                                <td>Comfort e-Bike Tour</td>
+                                <td class="price-cell">€30</td>
+                                <td class="price-cell">€55</td>
+                                <td class="price-cell">€75</td>
+                                <td class="price-cell">€25/dan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="pricing-content" id="weekly">
+                <div class="pricing-table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th>Tip bicikla</th>
+                                <th>Nedelja dana (7 dana)</th>
+                                <th>2 nedelje</th>
+                                <th>Mesec dana</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mountain e-Bike Pro</td>
+                                <td class="price-cell">€175</td>
+                                <td class="price-cell">€300</td>
+                                <td class="price-cell">€500</td>
+                            </tr>
+                            <tr>
+                                <td>City e-Bike Cruiser</td>
+                                <td class="price-cell">€130</td>
+                                <td class="price-cell">€220</td>
+                                <td class="price-cell">€400</td>
+                            </tr>
+                            <tr>
+                                <td>Family e-Bike Plus</td>
+                                <td class="price-cell">€200</td>
+                                <td class="price-cell">€350</td>
+                                <td class="price-cell">€600</td>
+                            </tr>
+                            <tr>
+                                <td>Comfort e-Bike Tour</td>
+                                <td class="price-cell">€150</td>
+                                <td class="price-cell">€260</td>
+                                <td class="price-cell">€450</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p style="text-align: center; margin-top: 30px; color: var(--medium-gray);">
+                        Dugoročni najmovi uključuju dodatne pogodnosti: besplatno punjenje baterije, osnovni set alata i bravu.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>e-Ride Virpazar</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Virpazar, Crna Gora</li>
+                        <li><i class="fas fa-phone"></i> +382 67 003 446</li>
+                        <li><i class="fas fa-envelope"></i> radomanilija06@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Brzi linkovi</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="active">Početna</a></li>
+                        <li><a href="onama.html">O nama</a></li>
+                        <li><a href="rute.html">Rute</a></li>
+                        <li><a href="cenovnik.html">Cenovnik</a></li>
+                        <li><a href="rezervisi.html">Rezerviši</a></li>
+                        <li><a href="kontakt.html">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Radno vreme</h4>
+                    <ul class="footer-links">
+                        <li>Pon - Sub: 09:00 - 20:00</li>
+                        <li>Ned: 10:00 - 16:00</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Povežite se</h4>
+                    <div class="footer-social">
+                        <a href="tel:+38267003446" class="social-icon"><i class="fas fa-phone"></i></a>
+                        <a href="https://www.instagram.com/eride.virpazar/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="mailto:radomanilija06@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Marko Ivanović</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JS for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                
+                const icon = mobileMenuBtn.querySelector('i');
+                if (nav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.style.padding = '5px 0';
+                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
+                } else {
+                    header.style.padding = '0';
+                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
+                }
+            });
+            
+            // Pricing tabs
+            const pricingTabs = document.querySelectorAll('.pricing-tab');
+            const pricingContents = document.querySelectorAll('.pricing-content');
+            
+            pricingTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    pricingTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to current tab
+                    this.classList.add('active');
+                    
+                    // Show appropriate content
+                    const tabId = this.getAttribute('data-tab');
+                    pricingContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Accordion functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

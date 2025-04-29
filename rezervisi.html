@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezerviši | eRide Virpazar | Electric Bicycle Rentals</title>
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --secondary-green: #1bd692;
+            --dark-green: #0e8f60;
+            --light-green: #23ffa9;
+            --light-gray: #f4f4f4;
+            --medium-gray: #a0a0a0;
+            --error-red: #ff4545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-black);
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(27, 214, 146, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-green);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-green);
+        }
+        
+        nav ul li a.active {
+            color: var(--secondary-green);
+            font-weight: 600;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+        }
+        
+        .page-header {
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to right, rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.6)), url('/api/placeholder/1400/500') center/cover no-repeat;
+            position: relative;
+            margin-top: 80px;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--light-gray);
+        }
+        
+        .highlight {
+            color: var(--secondary-green);
+        }
+        
+        /* Reservation Form Section Styles */
+        .reservation-section {
+            padding: 80px 0;
+        }
+
+        .reservation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .reservation-info h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .reservation-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-green);
+        }
+
+        .reservation-info p {
+            font-size: 16px;
+            color: var(--medium-gray);
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .info-box h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--secondary-green);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .info-icon {
+            width: 20px;
+            margin-right: 15px;
+            color: var(--secondary-green);
+        }
+
+        .info-text {
+            font-size: 15px;
+            color: var(--medium-gray);
+        }
+
+        /* Form Styles */
+        .reservation-form {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 40px;
+            border: 1px solid rgba(27, 214, 146, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: var(--light-gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-size: 15px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 214, 146, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: var(--medium-gray);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231bd692' viewBox='0 0 16 16'%3E%3Cpath d='M8 10.293l4.146-4.147a.5.5 0 0 1 .708.708L8.354 11.354a.5.5 0 0 1-.708 0L3.146 6.854a.5.5 0 1 1 .708-.708L8 10.293z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .form-control.error {
+            border-color: var(--error-red);
+        }
+
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .footer-social a{
+        text-decoration: none;
+    }
+        .form-bike-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .bike-option {
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bike-option:hover {
+            border-color: var(--secondary-green);
+        }
+
+        .bike-option.selected {
+            border-color: var(--secondary-green);
+            background-color: rgba(27, 214, 146, 0.1);
+        }
+
+        .bike-option-image {
+            height: 100px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .bike-option-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bike-option-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bike-option-price {
+            font-size: 14px;
+            color: var(--secondary-green);
+        }
+
+        .bike-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .bike-option-check {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--medium-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .bike-option.selected .bike-option-check {
+            border-color: var(--secondary-green);
+            background-color: var(--secondary-green);
+        }
+
+        .bike-option.selected .bike-option-check::after {
+            content: '✓';
+            color: var(--primary-black);
+            font-size: 12px;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--secondary-green);
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: var(--secondary-green);
+        }
+
+        .form-footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: var(--medium-gray);
+        }
+
+        /* Accordion for FAQ */
+        .faq-section {
+            padding: 60px 0 100px;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .faq-header h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .faq-header p {
+            font-size: 16px;
+            color: var(--medium-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(27, 214, 146, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: rgba(27, 214, 146, 0.05);
+        }
+
+        .accordion-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .accordion-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--secondary-green);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-icon::before {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .accordion-icon::after {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .accordion-item.active .accordion-icon::after {
+            opacity: 0;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+
+        .accordion-body {
+            padding: 0 20px 20px;
+            color: var(--medium-gray);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        footer {
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(27, 214, 146, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-col h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: var(--medium-gray);
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-green);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--medium-gray);
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--secondary-green);
+            color: var(--primary-black);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 40px;
+            }
+            
+            .reservation-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .form-bike-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 15px 0;
+            }
+            
+            .logo img {
+                height: 30px;
+            }
+            
+            .logo h1 {
+                font-size: 20px;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: var(--primary-black);
+                transition: left 0.3s ease;
+                padding: 20px;
+                border-right: 1px solid rgba(27, 214, 146, 0.1);
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0 0 20px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .reservation-form {
+                padding: 25px;
+            }
+            
+            .reservation-info h2,
+            .faq-header h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="logo.png" alt="eRide Logo">
+                    <h1>e-Ride Virpazar</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Početna</a></li>
+                        <li><a href="onama.html">O nama</a></li>
+                        <li><a href="rute.html">Rute</a></li>
+                        <li><a href="cenovnik.html">Cenovnik</a></li>
+                        <li><a href="rezervisi.html" class="active">Rezerviši</a></li>
+                        <li><a href="kontakt.html">Kontakt</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <h1><span class="highlight">Rezerviši</span> svoju avanturu</h1>
+                <p>Popunite formular ispod da biste rezervisali električni bicikl i krenuli u istraživanje Skadarskog jezera</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="reservation-section">
+        <div class="container">
+            <div class="reservation-grid">
+                <div class="reservation-info">
+                    <h2>Kako rezervisati</h2>
+                    <p>Rezervacija električnog bicikla je jednostavan proces. Popunite formular na ovoj stranici i naš tim će vas kontaktirati u roku od 24 sata da potvrdi vašu rezervaciju.</p>
+                    <p>Preporučujemo da rezervišete barem 2-3 dana unapred, posebno tokom visoke sezone (jun-septembar) kako biste osigurali dostupnost.</p>
+                    
+                    <div class="info-box">
+                        <h3>Šta treba da znate</h3>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Radno vreme:</strong> Otvoreni smo od 09:00 do 18:00 radnim danima, od 09:00 do 20:00 subotom i od 10:00 do 16:00 nedeljom.
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Preuzimanje:</strong> Svi bicikli se preuzimaju na našoj lokaciji u Virpazaru, pored pristana za čamce.
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Potrebna dokumenta:</strong> Za iznajmljivanje je potrebna lična karta ili pasoš.
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Načini plaćanja:</strong> Prihvatamo gotovinu (EUR), kao i kreditne kartice (Visa, Mastercard).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reservation-form">
+                    <form action="mailto:radomanilija06@gmail.com" method="POST" enctype="text/plain" id="reservationForm">
+                        <input type="hidden" name="subject" value="Nova rezervacija bicikla">
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">Ime*</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Vaše ime" required>
+                                <div class="error-message">Molimo unesite vaše ime</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Prezime*</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Vaše prezime" required>
+                                <div class="error-message">Molimo unesite vaše prezime</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="email">Email adresa*</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="vasa.adresa@email.com" required>
+                                <div class="error-message">Molimo unesite validnu email adresu</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Broj telefona*</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+382 XX XXX XXX" required>
+                                <div class="error-message">Molimo unesite broj telefona</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="rentalDate">Datum iznajmljivanja*</label>
+                                <input type="date" class="form-control" id="rentalDate" name="rentalDate" required>
+                                <div class="error-message">Molimo izaberite datum</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rentalDuration">Trajanje iznajmljivanja*</label>
+                                <select class="form-control" id="rentalDuration" name="rentalDuration" required>
+                                    <option value="">Izaberite trajanje</option>
+                                    <option value="2h">2 sata</option>
+                                    <option value="4h">4 sata (pola dana)</option>
+                                    <option value="8h">8 sati (ceo dan)</option>
+                                    <option value="2d">2 dana</option>
+                                    <option value="3d">3 dana</option>
+                                    <option value="custom">Više dana (navedite u napomeni)</option>
+                                </select>
+                                <div class="error-message">Molimo izaberite trajanje</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bikeType">Tip bicikla*</label>
+                            <div class="form-bike-options">
+                                <label class="bike-option">
+                                    <input type="radio" name="bikeType" value="mountain" required>
+                                    <div class="bike-option-image">
+                                        <img src="/api/placeholder/200/100" alt="Mountain e-Bike Pro">
+                                    </div>
+                                    <div class="bike-option-title">Mountain e-Bike Pro</div>
+                                    <div class="bike-option-price">€35 / dan</div>
+                                    <div class="bike-option-check"></div>
+                                </label>
+                                <label class="bike-option">
+                                    <input type="radio" name="bikeType" value="city" required>
+                                    <div class="bike-option-image">
+                                        <img src="/api/placeholder/200/100" alt="City e-Bike Cruiser">
+                                    </div>
+                                    <div class="bike-option-title">City e-Bike Cruiser</div>
+                                    <div class="bike-option-price">€25 / dan</div>
+                                    <div class="bike-option-check"></div>
+                                </label>
+                                <label class="bike-option">
+                                    <input type="radio" name="bikeType" value="family" required>
+                                    <div class="bike-option-image">
+                                        <img src="/api/placeholder/200/100" alt="Family e-Bike Plus">
+                                    </div>
+                                    <div class="bike-option-title">Family e-Bike Plus</div>
+                                    <div class="bike-option-price">€40 / dan</div>
+                                    <div class="bike-option-check"></div>
+                                </label>
+                                <label class="bike-option">
+                                    <input type="radio" name="bikeType" value="comfort" required>
+                                    <div class="bike-option-image">
+                                        <img src="/api/placeholder/200/100" alt="Comfort e-Bike Tour">
+                                    </div>
+                                    <div class="bike-option-title">Comfort e-Bike Tour</div>
+                                    <div class="bike-option-price">€30 / dan</div>
+                                    <div class="bike-option-check"></div>
+                                </label>
+                            </div>
+                            <div class="error-message">Molimo izaberite tip bicikla</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="numberOfBikes">Broj bicikala*</label>
+                            <select class="form-control" id="numberOfBikes" name="numberOfBikes" required>
+                                <option value="">Izaberite broj</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="more">Više (navedite u napomeni)</option>
+                            </select>
+                            <div class="error-message">Molimo izaberite broj bicikala</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="routePreference">Željena ruta (opciono)</label>
+                            <select class="form-control" id="routePreference" name="routePreference">
+                                <option value="">Izaberite rutu ili ostavite prazno</option>
+                                <option value="lakeshore">Obala jezera (lako, 15km)</option>
+                                <option value="villages">Sela Crmnice (srednje, 25km)</option>
+                                <option value="birdwatching">Posmatranje ptica (lako, 20km)</option>
+                                <option value="winery">Vinarije tura (srednje, 30km)</option>
+                                <option value="fullday">Celodnevna avantura (teško, 45km)</option>
+                                <option value="custom">Prilagođena ruta (opišite u napomeni)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="additionalInfo">Dodatne napomene (opciono)</label>
+                            <textarea class="form-control" id="additionalInfo" name="additionalInfo" placeholder="Unesite bilo koje dodatne informacije, zahteve ili pitanja..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Pošalji rezervaciju</button>
+                        
+                        <div class="form-footer">
+                            <p>* Obavezna polja</p>
+                            <p>Slanjem ovog formulara, vaše informacije će biti poslate na našu email adresu. Odgovorićemo vam u roku od 24 sata da potvrdimo rezervaciju.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header">
+                <h2>Česta <span class="highlight">pitanja</span></h2>
+                <p>Odgovori na najčešća pitanja o iznajmljivanju električnih bicikala</p>
+            </div>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-title">Da li je potrebno prethodno iskustvo sa električnim biciklima?</div>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Ne, nije potrebno prethodno iskustvo. Naši električni bicikli su jednostavni za korišćenje i pre početka vožnje ćemo vam dati kratko uputstvo. Električni motor se aktivira kada pedalirate i pomaže vam bez potrebe za komplikovanim komandama.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-title">Šta ako se baterija isprazni tokom vožnje?</div>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Svi naši bicikli imaju displej koji pokazuje preostalu snagu baterije, tako da ćete uvek znati koliko još možete preći. Ako se baterija isprazni, bicikl i dalje može da se koristi kao običan bicikl. Međutim, naše baterije imaju domet od 60-80km, što je više nego dovoljno za većinu ruta.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-title">Da li je moguće otkazati rezervaciju?</div>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Da, možete otkazati rezervaciju do 24 sata pre zakazanog termina bez ikakve naknade. Za otkazivanja u kraćem roku, naplaćujemo 30% od cene iznajmljivanja. Otkazivanje možete izvršiti putem emaila ili telefonom.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-title">Da li su rute pogodne za decu?</div>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Imamo nekoliko ruta koje su pogodne za porodice sa decom. Takođe nudimo i dečije električne bicikle za starije od 14 godina, kao i sedišta i prikolice za manju decu. Pri rezervaciji možete navesti da putujete sa decom i preporučićemo vam najpogodnije rute i bicikle.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-title">Da li je obavezno korišćenje kacige?</div>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Da, korišćenje kacige je obavezno za sve vozače iz sigurnosnih razloga. Mi obezbeđujemo kacige za sve korisnike bez dodatne naknade. Kacige se dezinfikuju nakon svake upotrebe.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>e-Ride Virpazar</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Virpazar, Crna Gora</li>
+                        <li><i class="fas fa-phone"></i> +382 67 003 446</li>
+                        <li><i class="fas fa-envelope"></i> radomanilija06@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Brzi linkovi</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="active">Početna</a></li>
+                        <li><a href="onama.html">O nama</a></li>
+                        <li><a href="rute.html">Rute</a></li>
+                        <li><a href="cenovnik.html">Cenovnik</a></li>
+                        <li><a href="rezervisi.html">Rezerviši</a></li>
+                        <li><a href="kontakt.html">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Radno vreme</h4>
+                    <ul class="footer-links">
+                        <li>Pon - Sub: 09:00 - 20:00</li>
+                        <li>Ned: 10:00 - 16:00</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Povežite se</h4>
+                    <div class="footer-social">
+                        <a href="tel:+38267003446" class="social-icon"><i class="fas fa-phone"></i></a>
+                        <a href="https://www.instagram.com/eride.virpazar/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="mailto:radomanilija06@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Marko Ivanović</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JS for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                
+                const icon = mobileMenuBtn.querySelector('i');
+                if (nav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.style.padding = '5px 0';
+                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
+                } else {
+                    header.style.padding = '0';
+                    header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
+                }
+            });
+            
+            // Bike option selection
+            const bikeOptions = document.querySelectorAll('.bike-option');
+            bikeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    bikeOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                });
+            });
+            
+            // Accordion functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Form validation
+            const form = document.getElementById('reservationForm');
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                
+                // Required fields
+                const requiredFields = form.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        valid = false;
+                        field.classList.add('error');
+                        field.nextElementSibling.style.display = 'block';
+                    } else {
+                        field.classList.remove('error');
+                        if (field.nextElementSibling) {
+                            field.nextElementSibling.style.display = 'none';
+                        }
+                    }
+                });
+                
+                // Email validation
+                const emailField = document.getElementById('email');
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailField.value.trim() && !emailPattern.test(emailField.value)) {
+                    valid = false;
+                    emailField.classList.add('error');
+                    emailField.nextElementSibling.style.display = 'block';
+                }
+                
+                if (!valid) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
